@@ -32,7 +32,7 @@ height:400
 
 var marginSettings = {
   top:20,
-  bottom: 30,
+  bottom: 50,
   left: 50,
   right: 50
 }
@@ -109,12 +109,13 @@ console.log("extent", d3.extent(dataSet[day]))
                 .domain(d3.extent(dataSet[day]));
                 //.range([0, graphWidth])
 
-          console.log("length:", dataSet[day].length);
-          console.log("height", graphHeight)
   var yScale = d3.scaleLinear()
                 .domain([0, dataSet[day].length])
-                .range([graphHeight, 0]);
+                .range([0, graphHeight]);
 
+  var yScale = d3.scaleLinear()
+                .domain([0, dataSet[day].length])
+                .range([0, graphHeight]);
   var yAxis = d3.axisLeft()
                 .scale(yScale);
 
@@ -153,22 +154,20 @@ console.log("extent", d3.extent(dataSet[day]))
                   .attr("transform", function(){
                   return "translate(" + (margins.left - 2) + "," + "0)";
                   });
-
   var graphData = graphSVG.append("g")
                     .attr("x", margins.left)
                     .attr("y", margins.top)
                     .classed("graph-data", true);
 
 
-  console.log("svg", )
   var graphBars = graphData.selectAll("rect")
                             .data(bins)
                             .enter()
                             .append("rect")
                             .attr("x", function(bar, i){return i * barWidth + margins.left})
-                            .attr("y", function(bar, i){return graphHeight - yScale(bar.length)})
+                            .attr("y", function(bar, i){console.log("bar-y:" + yScale(bar.length));return graphHeight - yScale(bar.length)})
                             .attr("width", barWidth)
-                            .attr("height", function(bar){console.log("translte", yScale(bar.length));return yScale(bar.length)})
+                            .attr("height", function(bar){console.log("Value:"+ bar.length + " Height:" +  yScale(bar.length));return yScale(bar.length)})
                             .attr("class", "graph-bar");
 
   var barLabel = graphData.selectAll("text")
